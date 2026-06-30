@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Away Travel PDP - GEO Wireframe</title>
+  <style>
+    :root {
+      --brand-primary: #111111;
+      --brand-bg: #ffffff;
+      --brand-surface: #f7f4f1;
+      --brand-text: #111111;
+      --brand-secondary: #555555;
+      
+      --visible-color: #2e7d32;
+      --collapsed-color: #f57f17;
+      --conditional-color: #6a1b9a;
+      --inline-color: #1565c0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Graphik', sans-serif; }
+    body { background-color: var(--brand-bg); color: var(--brand-text); padding-bottom: 100px; }
+
+    /* Intro Banner */
+    .intro-banner {
+      background-color: var(--brand-primary);
+      color: #fff;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #000;
+    }
+    .intro-left { display: flex; align-items: center; gap: 15px; }
+    .logo-placeholder {
+      background-color: #fff;
+      color: #000;
+      padding: 8px 16px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 14px;
+    }
+    .intro-right ol { font-size: 11px; color: #ccc; list-style-position: inside; }
+    .query-chips { margin-top: 10px; display: flex; gap: 8px; }
+    .chip { background: rgba(255,255,255,0.15); padding: 4px 10px; border-radius: 20px; font-size: 10px; }
+
+    /* Controls Bar */
+    .controls-bar {
+      background-color: #1a1a1a;
+      color: #fff;
+      padding: 15px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #333;
+    }
+    .toggle-container { display: flex; flex-direction: column; gap: 5px; }
+    .toggle-container label { font-size: 9px; text-transform: uppercase; color: #aaa; }
+    .segmented-pill { display: flex; background: #333; border-radius: 8px; padding: 2px; }
+    .segmented-pill button {
+      background: transparent; border: 0; color: #aaa; padding: 6px 14px;
+      font-size: 11px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
+    }
+    .segmented-pill button.active { background: #fff; color: #000; font-weight: bold; }
+    .legend { display: flex; gap: 15px; font-size: 11px; }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 8px; height: 8px; border-radius: 5px; }
+
+    /* Simulated Chrome & Nav */
+    .browser-chrome { border: 1px solid #ddd; border-bottom: 0; background: #eaeaea; padding: 8px; display: flex; gap: 6px; }
+    .chrome-dot { width: 10px; height: 10px; border-radius: 5px; background: #ccc; }
+    .chrome-dot.red { background: #ff5f56; }
+    .chrome-dot.yellow { background: #ffbd2e; }
+    .chrome-dot.green { background: #27c93f; }
+    
+    .site-nav {
+      background: var(--brand-bg);
+      border-bottom: 1px solid #eee;
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-links { display: flex; gap: 25px; list-style: none; font-size: 13px; font-weight: 500; }
+    .nav-links a { color: var(--brand-text); text-decoration: none; }
+    .nav-ctas { display: flex; gap: 15px; align-items: center; }
+
+    /* Layout & Zones */
+    .wireframe-container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; }
+    .zone-divider {
+      border-left: 3px solid var(--brand-primary);
+      padding-left: 10px; margin: 40px 0 20px 0;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--brand-secondary);
+    }
+
+    /* Content Blocks */
+    .content-block {
+      background: var(--brand-surface);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 6px;
+      padding: 25px;
+      margin-bottom: 20px;
+      position: relative;
+      transition: outline 0.1s;
+    }
+    .content-block:hover { outline: 2px solid var(--brand-primary); outline-offset: -2px; }
+    .block-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+    .badge-zone { display: flex; gap: 8px; align-items: center; }
+    .block-badge { background: var(--brand-primary); color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+    .state-pill { color: #fff; font-size: 9px; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; font-weight: 600; }
+    .audit-tag { font-size: 10px; font-weight: bold; letter-spacing: 0.5px; color: #555; }
+    .hover-cue { font-size: 10px; color: var(--brand-secondary); opacity: 0.6; }
+    .content-block:hover .hover-cue { opacity: 0; }
+
+    /* Structural Placeholders */
+    .text-line { height: 10px; background: rgba(17,17,17,0.15); margin-bottom: 10px; border-radius: 2px; }
+    .text-line.heading { height: 22px; background: rgba(17,17,17,0.9); width: 60%; margin-bottom: 15px; }
+    .text-line.sub { height: 14px; width: 40%; }
+    .img-box { background: rgba(17,17,17,0.08); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #666; }
+    .cta-btn {
+      background: var(--brand-primary); color: #fff; border: 0; padding: 12px 24px;
+      font-weight: bold; border-radius: 4px; cursor: pointer; display: inline-block; font-size: 12px;
+    }
+    .cta-secondary { background: transparent; border: 1px solid var(--brand-primary); color: var(--brand-primary); }
+
+    /* Tooltip Framework */
+    .geo-tooltip {
+      position: fixed; top: 50%; right: 60px; transform: translateY(-50%);
+      width: 380px; max-height: min(460px, calc(100vh - 200px));
+      background: #fff; border: 1px solid rgba(17,17,17,0.3); box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+      border-radius: 8px; padding: 20px; z-index: 2000;
+      display: none; flex-direction: column; overflow: visible;
+    }
+    .geo-tooltip::after {
+      content: ''; position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+      border-width: 10px 0 10px 10px; border-style: solid; border-color: transparent transparent transparent #fff;
+    }
+    .tooltip-inner { overflow-y: auto; flex: 1; min-height: 0; padding-right: 5px; }
+    .tooltip-inner::-webkit-scrollbar { width: 4px; }
+    .tooltip-inner::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 2px; }
+    .tooltip-section { margin-bottom: 15px; }
+    .tooltip-section h4 { font-size: 10px; text-transform: uppercase; color: var(--brand-secondary); margin-bottom: 4px; letter-spacing: 0.5px; }
+    .tooltip-section p { font-size: 12px; line-height: 1.4; color: #333; }
+
+    /* Interactive Accordion Toggles */
+    .accordion-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 75px 15px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .accordion-body { padding: 15px 0; display: none; font-size: 12px; line-height: 1.5; color: #444; }
+    .expand-circle {
+      width: 24px; height: 24px; border: 1.5px solid rgba(17,17,17,0.4); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; font-size: 14px;
+    }
+    .expand-circle:hover { background: var(--brand-primary); color: #fff; border-color: var(--brand-primary); }
+    .expand-circle.active { transform: rotate(45deg); background: var(--brand-primary); color: #fff; }
+
+    /* Grid Formats */
+    .hero-grid { display: grid; grid-template-columns: 1.2s 1fr; gap: 30px; }
+    .blocks-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+    .table-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #ddd; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    .table-cell { background: #fff; padding: 12px; font-size: 11px; }
+    .table-cell.head { background: #f0f0f0; font-weight: bold; }
+
+    /* Dynamic Conditionals */
+    .state-sale, .state-oos { display: none; }
+    
+    /* Sprint Section outside chrome */
+    .sprint-container { max-width: 1200px; margin: 40px auto; padding: 30px; background: var(--brand-surface); border-radius: 8px; }
+    .sprint-title { font-size: 18px; font-weight: bold; margin-bottom: 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+    .sprint-row { display: grid; grid-template-columns: 120px 1fr 100px; padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); font-size: 12px; }
+    .sprint-effort { font-weight: bold; text-transform: uppercase; font-size: 10px; text-align: right; }
+    .warning-callout { background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin-bottom: 15px; border-radius: 4px; font-size: 11px; color: #856404; }
+  </style>
+</head>
+<body>
+
+  <!-- Redirection & Insights Panel Header -->
+  <div class="intro-banner">
+    <div class="intro-left">
+      <div class="logo-placeholder">Away</div>
+      <div>
+        <h2 style="font-size:14px;">Expandable Bigger Carry-On restructuration blueprint</h2>
+        <p style="font-size:10px; color:#aaa;">Prepared by Tinuiti - V1 - June 2026 - LIGHT MODE</p>
+      </div>
+    </div>
+    <div class="intro-right">
+      <ol>
+        <li>Toggle standard vs conditional variants using the bar control buttons.</li>
+        <li>Hover on individual sections to uncover search engine context panel guidelines.</li>
+        <li>Click row accordions to toggle interactive mock displays.</li>
+      </ol>
+      <div class="query-chips">
+        <span class="chip">"Away Expandable Bigger Carry-On review"</span>
+        <span class="chip">"Best hardside front loading carry-on"</span>
+        <span class="chip">"Away topside vs classic clamshell luggage"</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Control Deck Layer -->
+  <div class="controls-bar">
+    <div class="toggle-container">
+      <label>Page Context Variant State Selector</label>
+      <div class="segmented-pill">
+        <button class="active" onclick="switchState('std')">Standard State</button>
+        <button onclick="switchState('sale')">Sale Active</button>
+        <button onclick="switchState('oos')">Out of Stock State</button>
+      </div>
+    </div>
+    <div class="legend">
+      <div class="legend-item"><div class="dot" style="background:var(--visible-color)"></div>Visible Layout</div>
+      <div class="legend-item"><div class="dot" style="background:var(--collapsed-color)"></div>Collapsed Segment</div>
+      <div class="legend-item"><div class="dot" style="background:var(--conditional-color)"></div>Conditional Block</div>
+      <div class="legend-item"><div class="dot" style="background:var(--inline-color)"></div>Inline Element</div>
+    </div>
+    <div style="font-size:11px; color:#aaa; font-style:italic;">Hover structural blocks for strategic GEO rationale</div>
+  </div>
+
+  <div class="browser-chrome">
+    <div class="chrome-dot red"></div><div class="chrome-dot yellow"></div><div class="chrome-dot green"></div>
+    <div style="background:#fff; font-size:10px; padding:2px 30px; border-radius:4px; margin-left:20px; width:400px; color:#666;">https://www.awaytravel.com/products/topside-bigger-carry-on-jet-black</div>
+  </div>
+
+  <!-- Main Extracted Header Navigation Structure -->
+  <nav class="site-nav">
+    <div class="logo-placeholder" style="background:var(--brand-primary); color:#fff;">Away</div>
+    <ul class="nav-links">
+      <li><a href="#">New Arrivals</a></li>
+      <li><a href="#">Best sellers</a></li>
+      <li><a href="#">Luggage</a></li>
+      <li><a href="#">Bags</a></li>
+      <li><a href="#">Accessories</a></li>
+      <li><a href="#">Bundle & save</a></li>
+    </ul>
+    <div class="nav-ctas">
+      <span style="font-size:12px; cursor:pointer;">Search</span>
+      <span style="font-size:12px; cursor:pointer; font-weight:bold;">Cart (0)</span>
+    </div>
+  </nav>
+
+  <!-- Interactive Dynamic Tooltip Panel Container -->
+  <div class="geo-tooltip" id="global-tooltip">
+    <div class="tooltip-inner">
+      <div class="tooltip-section">
+        <h4>What This Is</h4>
+        <p id="tip-what"></p>
+      </div>
+      <div class="tooltip-section">
+        <h4>Why We Recommend This Structure</h4>
+        <p id="tip-why"></p>
+      </div>
+      <div class="tooltip-section">
+        <h4>AI Search Impact</h4>
+        <p id="tip-impact"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content Elements Canvas Area Wrapper -->
+  <div class="wireframe-container">
+
+    <div class="zone-divider">Above the fold</div>
+
+    <!-- BLOCK 01 -->
+    <div class="content-block" data-block="1">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 01</span>
+          <span class="state-pill" style="background:var(--visible-color)">Visible</span>
+          <span class="audit-tag">RESTRUCTURED</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <div class="hero-grid">
+        <div class="img-box" style="height:250px;">Main Interactive Product Image Showcase (Topside Jet Black)</div>
+        <div>
+          <div class="text-line heading">Topside Bigger Carry-On: Deep Packing Hardside Luggage</div>
+          <div style="font-size:13px; font-weight:bold; margin-bottom:10px;">★ 4.43 (14 Customer Reviews Verified via SSR)</div>
+          <div style="font-size:18px; font-weight:bold; margin-bottom:15px;" id="hero-price">$398.00 USD</div>
+          
+          <div style="margin-bottom:15px;">
+            <p style="font-size:11px; margin-bottom:5px; font-weight:bold;">Color Variant: Jet Black</p>
+            <div style="display:flex; gap:8px;">
+              <div style="width:20px; height:20px; border-radius:50%; background:#111; border:2px solid #000;"></div>
+              <div style="width:20px; height:20px; border-radius:50%; background:#ccc;"></div>
+              <div style="width:20px; height:20px; border-radius:50%; background:#556b2f;"></div>
+            </div>
+          </div>
+          
+          <div id="cta-injector">
+            <button class="cta-btn">Add to cart</button>
+            <span style="font-size:11px; margin-left:10px; color:green; font-weight:bold;">✔ In Stock &amp; Ready to Ship</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 02 -->
+    <div class="content-block state-sale" data-block="2-sale">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 02</span>
+          <span class="state-pill" style="background:var(--conditional-color)">Conditional (Sale Active)</span>
+          <span class="audit-tag">NEW</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <div style="background:#fff3cd; border:1px dashed #ffc107; padding:15px; border-radius:4px; text-align:center;">
+        <strong style="color:#856404;">🔥 Seasonal Flash Promotion Active: Save 15% automatically at validation checkout checkout layer</strong>
+      </div>
+    </div>
+
+    <div class="content-block data-oos state-oos" data-block="2-oos">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 02</span>
+          <span class="state-pill" style="background:var(--conditional-color)">Conditional (Out Of Stock)</span>
+          <span class="audit-tag">NEW</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <div style="background:#f8d7da; border:1px dashed #dc3545; padding:15px; border-radius:4px;">
+        <strong style="color:#721c24;">⚠️ Status Update: This size/color selection is currently out of stock. Expected warehouse replenishment timeline slot: July 15, 2026.</strong>
+      </div>
+    </div>
+
+    <!-- BLOCK 03 -->
+    <div class="content-block" data-block="3">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 03</span>
+          <span class="state-pill" style="background:var(--visible-color)">Visible</span>
+          <span class="audit-tag">RESTRUCTURED</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <h3 style="margin-bottom:10px; font-size:14px;">Product Capabilities &amp; Travel Applications</h3>
+      <p style="font-size:12px; margin-bottom:15px; line-height:1.4;">The Topside Bigger Carry-On re-engineers traditional hardshell limitations by trading the standard middle clamshell split for an innovative deep front-loading trunk setup. This provides a smaller visual open layout footprint inside tight quarters while preserving maximum optimization capacity for continuous multi-day itineraries.</p>
+      <div class="blocks-3col">
+        <div style="background:#fff; padding:12px; border-radius:4px; border:1px solid #e0e0e0;">
+          <h4 style="font-size:11px; margin-bottom:4px;">Best Carry-On For Trains &amp; Commutes</h4>
+          <p style="font-size:11px; color:#555;">Equipped with integrated back wheel stabilizers and active toggle mechanism settings that guarantee stability on transit shifts.</p>
+        </div>
+        <div style="background:#fff; padding:12px; border-radius:4px; border:1px solid #e0e0e0;">
+          <h4 style="font-size:11px; margin-bottom:4px;">Best Compact Footprint For Hotel Desks</h4>
+          <p style="font-size:11px; color:#555;">Front-loading access layout eliminates the traditional split-open necessity to expand across floorspace floorspace surfaces.</p>
+        </div>
+        <div style="background:#fff; padding:12px; border-radius:4px; border:1px solid #e0e0e0;">
+          <h4 style="font-size:11px; margin-bottom:4px;">Best Internal Organization Cubes</h4>
+          <p style="font-size:11px; color:#555;">Features customized integrated vertical hanging packing components configured to adapt directly into closet layout closets.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="zone-divider">Trust and proof zone</div>
+
+    <!-- BLOCK 04 -->
+    <div class="content-block" data-block="4">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 04</span>
+          <span class="state-pill" style="background:var(--visible-color)">Visible</span>
+          <span class="audit-tag">RESTRUCTURED</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <h3 style="margin-bottom:12px; font-size:14px;">Verified Customer Experiences</h3>
+      <div class="blocks-3col">
+        <div style="background:#fff; padding:12px; border-radius:4px; font-size:11px; line-height:1.4;">
+          <p>"Convert to front loading setup. Incredible spatial floor management in small European hotel platforms. Fits more bulk items than previous items."</p>
+          <strong style="display:block; margin-top:6px; color:#666;">— Jess26, Verified Traveler</strong>
+        </div>
+        <div style="background:#fff; padding:12px; border-radius:4px; font-size:11px; line-height:1.4;">
+          <p>"Wheel mechanics lock cleanly. Perfect utility value on platform waiting sequences when changing train networks."</p>
+          <strong style="display:block; margin-top:6px; color:#666;">— Transit Advocate, Verified Buyer</strong>
+        </div>
+        <div style="background:#fff; padding:12px; border-radius:4px; font-size:11px; line-height:1.4;">
+          <p>"The hanging packing compression cubes change the entire unpacking workflow sequence entirely. Straight to wardrobe rod seamlessly."</p>
+          <strong style="display:block; margin-top:6px; color:#666;">— K From Texas, Verified Customer</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- BLOCK 05 -->
+    <div class="content-block" data-block="5">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 05</span>
+          <span class="state-pill" style="background:var(--visible-color)">Visible</span>
+          <span class="audit-tag">NEW</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <h3 style="margin-bottom:12px; font-size:14px;">Side-by-Side Architectural Suitcase Comparison Matrix</h3>
+      <div class="table-grid">
+        <div class="table-cell head">Specifications Matrix</div>
+        <div class="table-cell head" style="border-bottom:2px solid var(--brand-primary)">Away Topside Carry-On</div>
+        <div class="table-cell head">Away Classic Clamshell</div>
+        <div class="table-cell head">Standard Industry Alternatives</div>
+
+        <div class="table-cell" style="font-weight:bold;">Opening Mechanics</div>
+        <div class="table-cell">Deep Front-Loading Lid Deck</div>
+        <div class="table-cell">50/50 Middle Separation Split</div>
+        <div class="table-cell">Traditional Outer Zipper Border</div>
+
+        <div class="table-cell" style="font-weight:bold;">Active Braking System</div>
+        <div class="table-cell">Yes (Stabilizing Mechanism Buttons)</div>
+        <div class="table-cell">No (Free Roll)</div>
+        <div class="table-cell">Absent</div>
+
+        <div class="table-cell" style="font-weight:bold;">Room Layout Footprint</div>
+        <div class="table-cell">Compact (Saves ~50% Space Layout)</div>
+        <div class="table-cell">Expanded Floor Usage Required</div>
+        <div class="table-cell">Varies (Standard Clearance)</div>
+      </div>
+    </div>
+
+    <div class="zone-divider">AI answer engine fuel zone</div>
+
+    <!-- BLOCK 06 -->
+    <div class="content-block" data-block="6">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 06</span>
+          <span class="state-pill" style="background:var(--collapsed-color)">Collapsed</span>
+          <span class="audit-tag">NEW</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <h3 style="margin-bottom:12px; font-size:14px;">Pre-Purchase Verification Frequently Asked Questions</h3>
+      
+      <div class="accordion-row">
+        <div style="font-size:12px; font-weight:bold;">Does the Away Topside Carry-On comply with international airline dimensions?</div>
+        <div class="expand-circle" onclick="toggleAcc(this)">+</div>
+      </div>
+      <div class="accordion-body">Yes, the layout profile fits within major international sizing compliance rules, measuring specifically to guarantee overhead space clear authorization across regional commuter flight options.</div>
+
+      <div class="accordion-row">
+        <div style="font-size:12px; font-weight:bold;">How does the front-loading model maximize space compared to the legacy clamshell?</div>
+        <div class="expand-circle" onclick="toggleAcc(this)">+</div>
+      </div>
+      <div class="accordion-body">By eliminating the center partition section, you gain uninterrupted packing optimization depth, allowing thicker winter outerwear pieces or hard shoe setups to stack cleanly layout arrays.</div>
+    </div>
+
+    <!-- BLOCK 07 -->
+    <div class="content-block" data-block="7">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 07</span>
+          <span class="state-pill" style="background:var(--collapsed-color)">Collapsed</span>
+          <span class="audit-tag">RESTRUCTURED</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <div class="accordion-row">
+        <div style="font-size:13px; font-weight:bold;">Technical Materials, Sizing &amp; Compliance Details</div>
+        <div class="expand-circle" onclick="toggleAcc(this)">+</div>
+      </div>
+      <div class="accordion-body">
+        <p style="margin-bottom:6px;"><strong>Outer Shell Material:</strong> 100% Impact-Resistant High-Grade Polycarbonate Shell Composition.</p>
+        <p style="margin-bottom:6px;"><strong>Dimensions Structure:</strong> 22.7" x 14.7" x 9.6" Sizing Profile Coordinates.</p>
+        <p style="margin-bottom:6px;"><strong>Weight Total Load:</strong> 8.2 lbs Base Empty Clearance Baseline.</p>
+      </div>
+    </div>
+
+    <!-- BLOCK 08 -->
+    <div class="content-block" data-block="8">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 08</span>
+          <span class="state-pill" style="background:var(--collapsed-color)">Collapsed</span>
+          <span class="audit-tag">NEW</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <div class="img-box" style="height:140px; margin-bottom:10px;">Embedded Multimedia Demostration: Packing Mechanics Breakdown Video Player</div>
+      <div class="accordion-row" style="padding:5px 75px 5px 0;">
+        <div style="font-size:11px; color:#555;">View detailed text transcript alternative data</div>
+        <div class="expand-circle" onclick="toggleAcc(this)">+</div>
+      </div>
+      <div class="accordion-body">"Video transcript showing Away traveler demonstrating how the Topside suitcase fits inside small plane overhead setups, deploying the active brake toggle button smoothly to secure placement position."</div>
+    </div>
+
+    <!-- BLOCK 09 -->
+    <div class="content-block" data-block="9">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 09</span>
+          <span class="state-pill" style="background:var(--collapsed-color)">Collapsed</span>
+          <span class="audit-tag">RESTRUCTURED</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <div class="accordion-row">
+        <div style="font-size:12px; font-weight:bold;">Deeper Long-Term Travel Insights &amp; Reviews Expansion</div>
+        <div class="expand-circle" onclick="toggleAcc(this)">+</div>
+      </div>
+      <div class="accordion-body">Additional evaluation text entries logs documenting suitcase execution durability over 12 months across multimodal train commutes, flight paths, and rough baggage carousel handlings.</div>
+    </div>
+
+    <div class="zone-divider">Conversion close</div>
+
+    <!-- BLOCK 10 -->
+    <div class="content-block" data-block="10">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 10</span>
+          <span class="state-pill" style="background:var(--inline-color)">Inline</span>
+          <span class="audit-tag">RETAINED</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <h4 style="font-size:13px; margin-bottom:10px;" id="related-title">Complete Your Packing Infrastructure System</h4>
+      <div class="blocks-3col">
+        <div class="img-box" style="height:80px;">Everyday Backpack Edit</div>
+        <div class="img-box" style="height:80px;">Modular Toiletry Organizers</div>
+        <div class="img-box" style="height:80px;">Signature Tech Cord Sets</div>
+      </div>
+    </div>
+
+    <!-- BLOCK 11 -->
+    <div class="content-block" data-block="11">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 11</span>
+          <span class="state-pill" style="background:var(--inline-color)">Inline</span>
+          <span class="audit-tag">RESTRUCTURED</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <div style="display:flex; justify-content:space-around; font-size:11px; text-align:center;">
+        <div>📦 Free FedEx Ground Shipping Thresholds</div>
+        <div>🔄 100-Day Return Window Policy Period</div>
+        <div>🛡️ Limited Lifetime Shell Warranty Structure</div>
+      </div>
+    </div>
+
+    <!-- BLOCK 12 -->
+    <div class="content-block" data-block="12">
+      <div class="block-header">
+        <div class="badge-zone">
+          <span class="block-badge">BLOCK 12</span>
+          <span class="state-pill" style="background:var(--visible-color)">Visible</span>
+          <span class="audit-tag">RESTRUCTURED</span>
+        </div>
+        <div class="hover-cue">Hover for insight</div>
+      </div>
+      <div style="display:flex; justify-content:between; align-items:center;" id="final-cta-zone">
+        <div>
+          <h4>Secure your Topside Carry-On</h4>
+          <p style="font-size:11px; color:#666;">Enjoy lifetime engineering protection coverage on your next itinerary.</p>
+        </div>
+        <button class="cta-btn">Add to cart</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Implementation Strategy Deck Block -->
+  <div class="sprint-container">
+    <div class="sprint-title">GEO Optimization Implementation Sprint Pipeline Blueprint</div>
+    <div class="warning-callout">
+      <strong>⚠️ Server-Side Rendering (SSR) Architecture Audit Callout Requirement:</strong> Pricing indices, dynamic availability counters, and baseline review data blocks are currently injected via Client-Side Rendering Javascript elements. This masks vital tracking strings from search crawlers. Shifting these layers into semantic pre-rendered SSR HTML blocks is a highly critical foundational step.
+    </div>
+    
+    <div class="sprint-row">
+      <div style="font-weight:bold;">Sprint 1</div>
+      <div><strong>FAQ and Q&amp;A Metadata Schema Injection:</strong> Standardize explicit FAQPage JSON-LD structural code layers mapping existing queries. (No new text generation required).</div>
+      <div class="sprint-effort" style="color:green;">Low Effort</div>
+    </div>
+    <div class="sprint-row">
+      <div style="font-weight:bold;">Sprint 2</div>
+      <div><strong>Comparison Table Implementation:</strong> Construct the static visible comparison table on page code to answer semantic comparison query architectures natively.</div>
+      <div class="sprint-effort" style="color:orange;">Medium Effort</div>
+    </div>
+    <div class="sprint-row">
+      <div style="font-weight:bold;">Sprint 3</div>
+      <div><strong>Use-Case Descriptive Content prose addition:</strong> Inject descriptive prose sentences targeting distinct commuter applications directly into the DOM tree.</div>
+      <div class="sprint-effort" style="color:green;">Low Effort</div>
+    </div>
+    <div class="sprint-row">
+      <div style="font-weight:bold;">Sprint 4</div>
+      <div><strong>Dynamic Out-of-Stock/Sale Architecture adjustment:</strong> Implement explicit availability schema properties to correctly feed search carousels during stock shifts.</div>
+      <div class="sprint-effort" style="color:orange;">Medium Effort</div>
+    </div>
+    <div class="sprint-row">
+      <div style="font-weight:bold;">Sprint 5</div>
+      <div><strong>Multimedia Object Schema and Transcripts deployment:</strong> Append invisible text alternatives directly below hidden video details components.</div>
+      <div class="sprint-effort" style="color:green;">Low Effort</div>
+    </div>
+  </div>
+
+  <!-- Tooltip & Interactive Script Engine -->
+  <script>
+    const tooltipData = {
+      "1": {
+        what: "Above-fold primary purchase configuration layout housing product images, sizing metrics, and primary action arrays.",
+        why: "Establishes immediate semantic confirmation answering standard visibility checks (What/Price/Availability) cleanly before initial scrolling triggers.",
+        impact: "Guarantees key elements exist natively in pre-rendered layout scripts so crawlers feed up-to-the-minute details cleanly to shopping carousels."
+      },
+      "2-sale": {
+        what: "CMS-triggered promotional info layout row active strictly during specific seasonal event timelines.",
+        why: "Surfaces pricing alternative signals dynamically inside structured environments rather than using non-semantic text decorations.",
+        impact: "Enables programmatic promotional tracking systems to correctly pull sales markdown value data arrays."
+      },
+      "2-oos": {
+        what: "Replenishment alert layout panel component serving out of stock state variations explicitly.",
+        why: "Diverts dropping conversions into continuous email loop captures while providing clear expectation dates.",
+        impact: "Provides clear crawl answers regarding stock return timings to prevent routing visitors onto dead error tracks."
+      },
+      "3": {
+        what: "Conversational application text block split cleanly into context cards matching common comparison query phrases.",
+        why: "Human buyers look for clear capability matches rather than raw sizing lists. Prose sentences bridge that layout space.",
+        impact: "Natively satisfies generative logic checks looking for attributable authority paragraphs outlining product utility limits."
+      },
+      "4": {
+        what: "Visible first-person testimonial quote strip displaying specific named outcomes from verified purchases.",
+        why: "Removes third-party social doubt layers immediately within early validation sequences to raise conversion confidence.",
+        impact: "Provides clean quote text for engine modules answering conversational assessment checks."
+      },
+      "5": {
+        what: "Visible cross-product evaluation grid outlining structural feature changes versus traditional case geometries.",
+        why: "Keeps comparative research intent actions hosted directly on-site rather than pushing users onto alternative aggregation platforms.",
+        impact: "Positions the brand as the primary source for comparative search tasks instead of yielding traffic to reviews hubs."
+      },
+      "6": {
+        what: "Structured expandable Q&amp;A block targeting precise pre-purchase friction objections.",
+        why: "Resolves lingering product selection doubts immediately prior to finalizing cart addition loops.",
+        impact: "Natively supports high snippet inclusion chances via targeted question-answer styling blocks."
+      },
+      "7": {
+        what: "Crawl-ready detailed dimension parameters table hidden under layout accordions to control page clearance length.",
+        why: "Provides technical verification metrics for detail-oriented travelers without burdening basic visual browsers.",
+        impact: "Ensures comprehensive weight and dimension criteria remain searchable in the tree code regardless of visibility settings."
+      },
+      "8": {
+        what: "Media walkthrough block featuring hidden text alternative transcripts.",
+        why: "Enriches content density with multimedia assets that improve user dwell time benchmarks.",
+        impact: "Signals authoritative multimodal utility content availability to search crawlers."
+      },
+      "9": {
+        what: "Decompiled secondary list layers for extended customer review evaluation logs.",
+        why: "Supports deep consideration processes for analytical consumer cohorts looking for long-term wear metrics.",
+        impact: "Multiplies available evaluation text surfaces to match long-tail intent inputs cleanly."
+      },
+      "10": {
+        what: "Cross-sell bundle layout row suggesting compatible companion items.",
+        why: "Increases average transaction order volumes while establishing comprehensive catalog context arrays.",
+        impact: "Reinforces horizontal catalog indexing structure parameters across categories."
+      },
+      "11": {
+        what: "Trust, protection policies, and delivery threshold guarantee highlights strip.",
+        why: "Neutralizes shipping cost and return period anxieties right before checkout validation checkpoints.",
+        impact: "Feeds clear answers to policy check inquiries like return flexibility benchmarks."
+      },
+      "12": {
+        what: "Secondary duplicate final conversion prompt terminal layout section closing the full scrolling pathway.",
+        why: "Captures users who completed comprehensive content scrolling reviews without requiring backward scrolling updates.",
+        impact: "Pure conversion design utility. High user interaction efficiency signals overall domain authority health values."
+      }
+    };
+
+    const tooltip = document.getElementById('global-tooltip');
+    const tipWhat = document.getElementById('tip-what');
+    const tipWhy = document.getElementById('tip-why');
+    const tipImpact = document.getElementById('tip-impact');
+    let leaveTimeout;
+
+    document.querySelectorAll('.content-block').forEach(block => {
+      block.addEventListener('mouseenter', () => {
+        clearTimeout(leaveTimeout);
+        const blockId = block.getAttribute('data-block');
+        const data = tooltipData[blockId];
+        if (data) {
+          tipWhat.innerHTML = data.what;
+          tipWhy.innerHTML = data.why;
+          tipImpact.innerHTML = data.impact;
+          tooltip.style.display = 'flex';
+        }
+      });
+
+      block.addEventListener('mouseleave', () => {
+        leaveTimeout = setTimeout(() => {
+          tooltip.style.display = 'none';
+        }, 300);
+      });
+    });
+
+    tooltip.addEventListener('mouseenter', () => { clearTimeout(leaveTimeout); });
+    tooltip.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+
+    function toggleAcc(btn) {
+      btn.classList.toggle('active');
+      const body = btn.parentElement.nextElementSibling;
+      if (body && body.classList.contains('accordion-body')) {
+        body.style.display = (body.style.display === 'block') ? 'none' : 'block';
+      }
+    }
+
+    function switchState(state) {
+      document.querySelectorAll('.segmented-pill button').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const bannerSale = document.querySelector('.state-sale');
+      const bannerOos = document.querySelector('.state-oos');
+      const ctaInjector = document.getElementById('cta-injector');
+      const finalCtaZone = document.getElementById('final-cta-zone');
+      const relatedTitle = document.getElementById('related-title');
+
+      bannerSale.style.display = 'none';
+      bannerOos.style.display = 'none';
+
+      if (state === 'std') {
+        ctaInjector.innerHTML = `<button class="cta-btn">Add to cart</button><span style="font-size:11px; margin-left:10px; color:green; font-weight:bold;">✔ In Stock &amp; Ready to Ship</span>`;
+        finalCtaZone.innerHTML = `<div><h4>Secure your Topside Carry-On</h4><p style="font-size:11px; color:#666;">Enjoy lifetime engineering protection coverage on your next itinerary.</p></div><button class="cta-btn">Add to cart</button>`;
+        relatedTitle.innerHTML = "Complete Your Packing Infrastructure System";
+      } else if (state === 'sale') {
+        bannerSale.style.display = 'block';
+        ctaInjector.innerHTML = `<button class="cta-btn">Add to cart</button><span style="font-size:11px; margin-left:10px; color:red; font-weight:bold;">🔥 Promo Sizing Applied</span>`;
+        finalCtaZone.innerHTML = `<div><h4>Secure your Topside Carry-On</h4><p style="font-size:11px; color:red;">Flash Markdown Active.</p></div><button class="cta-btn">Add to cart</button>`;
+        relatedTitle.innerHTML = "Complete Your Packing Infrastructure System";
+      } else if (state === 'oos') {
+        bannerOos.style.display = 'block';
+        ctaInjector.innerHTML = `<div style="display:flex; gap:10px;"><input type="email" placeholder="Enter email for restock alerts" style="padding:10px; border:1px solid #ccc; border-radius:4px; width:220px;"><button class="cta-btn">Notify me when available</button></div>`;
+        finalCtaZone.innerHTML = `<div><h4>Topside Carry-On Restock Registry</h4><p style="font-size:11px; color:#666;">Get real-time alerts the millisecond units land.</p></div><button class="cta-btn cta-secondary">View similar items</button>`;
+        relatedTitle.innerHTML = "⚠️ Out of Stock Alternatives Available Now";
+      }
+    }
+  </script>
+</body>
+</html>
